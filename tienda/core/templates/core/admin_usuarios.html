@@ -1,0 +1,152 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+
+        <!-- MODIFICAR DATOS -->
+        <main role="main">
+          <div class="container">
+            <section>
+              <h1 class="registrar">Mantenedor de usuarios</h1>
+              <br><br>
+              <form method="POST" id="formularioTres" action="row g-3 needs-validation">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col">
+    
+                      <!-- ID  -->
+                      <div class="mb-3">
+                          <label for="id" class="form-label">ID</label>
+                          <input type="number" placeholder="023" class="form-control" id="id" name="id" required>
+                        </div>
+  
+                      <!-- Tipo de usuario -->
+                      <div class="mb-3">
+                          <label for="">Tipo de usuario</label>
+                          <div class="form-check">
+                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                              <label class="form-check-label" for="flexRadioDefault1">
+                                Cliente
+                              </label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                              <label class="form-check-label" for="flexRadioDefault2">
+                                Administrador
+                              </label>
+                            </div>
+                      </div>
+  
+                      <!-- Rut  -->
+                      <div class="mb-3">
+                        <label for="rut" class="form-label">RUT</label>
+                        <input type="text" placeholder="Ej: 12345678-k" class="form-control" id="rut" name="rut" required>
+                      </div>
+    
+                      <!-- Nombre  -->
+                      <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" placeholder="" class="form-control" id="nombre" name="nombre" required>
+                      </div>
+    
+                      <!-- Apellido  -->
+                      <div class="mb-3">
+                        <label for="apellido" class="form-label">Apellido</label>
+                        <input type="text" placeholder="" class="form-control" id="apellido" name="apellido" required>
+                      </div>
+    
+                      <!-- Correo  -->
+                      <div class="mb-3">
+                        <label for="email" class="form-label">Correo</label>
+                        <input type="email" placeholder="Ejemplo@zucaritasFC.com" class="form-control" id="email" name="email" required>
+                      </div>
+    
+                      <!-- Direccion  -->
+                      <div class="mb-3">
+                        <label for="direccion" class="form-label">Direccion</label>
+                        <textarea rows="5" class="form-control" id="direccion" name="direccion" required></textarea>
+                      </div>
+    
+                      <!-- checkout  -->
+                      <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">Deseo suscribirme con un aporte de $3000 mensuales y obtener un 5% de descuento en mis compras</label>
+                      </div>
+    
+                      <!-- Contraseña  -->
+                      <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+                        <div class="input-group">
+                          <input type="password" placeholder="Ingrese su contraseña" class="form-control" id="password" name="password" readonly required>
+                          <span class="toggle-password" onclick="togglePasswordVisibility()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                              <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                              <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                            </svg>
+                          </span>
+                        </div>
+                      </div>
+                    
+                      <div class="col">
+                        <button type="button" class="btn btn-primary mb-3" onclick="generarContrasena()">Generar contraseña</button>
+                      </div>
+                      
+    
+                      <!-- Guardar y Limpiar  -->
+                      <div class="col text">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="reset" class="btn btn-primary">Nuevo</button>
+                        <button type="button" class="btn btn-primary">Eliminar</button>
+                      </div>
+                      <br>
+                    </div>
+    
+                    <!-- foto perfil  -->
+                    <div class="col">
+                      <label for="formFile" class="form-label">Default file input example</label>
+                      <input class="form-control" type="file" id="formFile">
+  
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </section>
+    
+          </div>
+        </main>
+  
+      <!-- TABLA -->
+      <section>
+        <table id="tabla-principal" class="table table-hover">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Tipo de usuario</th>
+              <th scope="col">RUT</th>
+              <th scope="col">Nombre de usuario</th>
+              <th scope="col">Correo</th>
+              <th scope="col">Dirección</th>
+              <th scope="col">Subscripción</th>
+              <th scope="col">Imagen</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for perfil in perfiles %}
+              <tr>
+                <th scope="row">{{ perfil.id }}</th>
+                <td>{{ perfil.tipo_usuario }}</td>
+                <td>{{ perfil.rut }}</td>
+                <td>{{ perfil.usuario.username }}</td>
+                <td>{{ perfil.usuario.email }}</td>
+                <td>{{ perfil.direccion }}</td>
+                <td>{{ perfil.subscrito }}</td>
+                <td><img src="/media/{{ perfil.imagen }}" class="producto-sm" alt=""></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        
+      </section>
+      
+  {% endblock content %}
